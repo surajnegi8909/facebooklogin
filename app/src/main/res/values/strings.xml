@@ -1,5 +1,3 @@
 <resources>
     <string name="app_name">FacebookLoginLibrary</string>
-    <string name="facebook_app_id">1915883098578632</string>
-    <string name="facebook_client_token">5e1e09eb81b8f31d8092925b81e778e2</string>
 </resources>

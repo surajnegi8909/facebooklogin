@@ -19,18 +19,16 @@ import org.json.JSONObject
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
-class FacebookLogin {
+class FacebookLogin() {
     companion object {
-        private var mContext: Context? = null
         private var facebookLoginListener: FacebookLoginListener? = null
         private var mCallbackManager: CallbackManager? = null
         lateinit var activityResultOwner : ActivityResultRegistryOwner
 
         fun doFacebookLogin(context: Context?, activityResultRegistryOwner: ActivityResultRegistryOwner,facebookListener:FacebookLoginListener) {
-            mContext = context
             activityResultOwner = activityResultRegistryOwner
             facebookLoginListener = facebookListener
-            printHashKey()
+            printHashKey(context)
             mCallbackManager = create()
             LoginManager.getInstance()
                 .registerCallback(mCallbackManager, object : FacebookCallback<LoginResult> {
@@ -51,7 +49,7 @@ class FacebookLogin {
                 })
         }
 
-        fun performLogin() {
+        fun performLogin(mContext: Context?) {
             if (isNetworkAvailable(mContext)) {
                 LoginManager.getInstance().logOut()
                 mCallbackManager?.let {
@@ -85,7 +83,7 @@ class FacebookLogin {
             LoginManager.getInstance().logOut()
         }
 
-        private fun printHashKey() {
+        private fun printHashKey(mContext: Context?) {
             try {
                 val packageName = mContext?.applicationContext?.packageName
                 val info = packageName?.let {
@@ -106,7 +104,6 @@ class FacebookLogin {
                         val md = MessageDigest.getInstance("SHA")
                         md.update(signature.toByteArray())
                         Log.e("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
-                        Log.d("keyHash", Base64.encodeToString(md.digest(), Base64.DEFAULT))
                     }
                 }
             } catch (e: NameNotFoundException) {
